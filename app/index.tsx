@@ -10,6 +10,7 @@ import { EyeIcon, EyeOffIcon, ArrowRightIcon } from '@/components/ui/icon';
 import { createIcon } from '@gluestack-ui/core/icon/creator';
 import { Path } from 'react-native-svg';
 import { Svg } from '@gluestack-ui/core/icon/creator';
+import { useRouter } from 'expo-router';
 
 // Create Box/Inventory Icon
 const BoxIcon = createIcon({
@@ -43,13 +44,40 @@ const BoxIcon = createIcon({
 });
 
 export default function Home() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({
+    username: '',
+    password: '',
+  });
+
+  const validateForm = () => {
+    const newErrors = {
+      username: '',
+      password: '',
+    };
+
+    if (!username.trim()) {
+      newErrors.username = 'El usuario es requerido';
+    }
+
+    if (!password.trim()) {
+      newErrors.password = 'La contraseña es requerida';
+    } else if (password.length < 4) {
+      newErrors.password = 'La contraseña debe tener al menos 4 caracteres';
+    }
+
+    setErrors(newErrors);
+    return !newErrors.username && !newErrors.password;
+  };
 
   const handleLogin = () => {
-    // Handle login logic here
-    console.log('Login:', { username, password });
+    if (validateForm()) {
+      // Si la validación pasa, navegar a las tabs
+      router.push('/tabs/(tabs)/tab1');
+    }
   };
 
   return (
@@ -80,15 +108,27 @@ export default function Home() {
               <Input
                 variant="outline"
                 size="lg"
-                className="border-gray-300 rounded-lg"
+                className={`rounded-lg ${
+                  errors.username ? 'border-red-500' : 'border-gray-300'
+                }`}
               >
                 <InputField
                   placeholder="Escribe tu usuario aqui"
                   value={username}
-                  onChangeText={setUsername}
+                  onChangeText={(text) => {
+                    setUsername(text);
+                    if (errors.username) {
+                      setErrors({ ...errors, username: '' });
+                    }
+                  }}
                   className="text-base"
                 />
               </Input>
+              {errors.username && (
+                <Text className="text-red-500 text-sm mt-1">
+                  {errors.username}
+                </Text>
+              )}
             </VStack>
 
             {/* Password Field */}
@@ -97,13 +137,20 @@ export default function Home() {
               <Input
                 variant="outline"
                 size="lg"
-                className="border-gray-300 rounded-lg"
+                className={`rounded-lg ${
+                  errors.password ? 'border-red-500' : 'border-gray-300'
+                }`}
               >
                 <InputField
                   secureTextEntry={!showPassword}
                   placeholder="Escribe tu contrasena aqui"
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={(text) => {
+                    setPassword(text);
+                    if (errors.password) {
+                      setErrors({ ...errors, password: '' });
+                    }
+                  }}
                   className="text-base flex-1"
                 />
                 <InputSlot className="pr-3">
@@ -120,6 +167,11 @@ export default function Home() {
                   </Pressable>
                 </InputSlot>
               </Input>
+              {errors.password && (
+                <Text className="text-red-500 text-sm mt-1">
+                  {errors.password}
+                </Text>
+              )}
             </VStack>
 
             {/* Login Button */}
