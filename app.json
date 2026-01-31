@@ -31,7 +31,14 @@
     "plugins": [
       "expo-router",
       "expo-web-browser",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "La aplicación necesita acceso a tus fotos para agregar imágenes de productos.",
+          "cameraPermission": "La aplicación necesita acceso a tu cámara para tomar fotos de productos."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
