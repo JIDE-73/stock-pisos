@@ -76,7 +76,7 @@ export default function Home() {
   const handleLogin = () => {
     if (validateForm()) {
       // Si la validación pasa, navegar a las tabs
-      router.push('/tabs/(tabs)/tab1');
+      router.push('/tabs/(tabs)/inicio');
     }
   };
 

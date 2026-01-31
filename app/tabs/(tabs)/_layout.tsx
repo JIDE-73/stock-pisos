@@ -20,17 +20,45 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="tab1"
+        name="inicio"
         options={{
-          title: 'Tab 1',
-          tabBarIcon: ({ color }) => <TabBarIcon name="star-o" color={color} />,
+          title: 'Inicio',
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="tab2"
+        name="productos"
         options={{
-          title: 'Tab 2',
-          tabBarIcon: ({ color }) => <TabBarIcon name="star-o" color={color} />,
+          title: 'Productos',
+          tabBarIcon: ({ color }) => <TabBarIcon name="cube" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="establecimientos"
+        options={{
+          title: 'Establecimientos',
+          tabBarIcon: ({ color }) => <TabBarIcon name="building" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="estantes"
+        options={{
+          title: 'Estantes',
+          tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="usuarios"
+        options={{
+          title: 'Usuarios',
+          tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="bitacora"
+        options={{
+          title: 'Bitacora',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
         }}
       />
     </Tabs>
