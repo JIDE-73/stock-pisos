@@ -26,18 +26,15 @@ function arrangeChildrenIntoRows({
 }) {
   let currentRow = 1;
   let currentRowTotalColSpan = 0;
-  // store how many items in each row
   const rowItemsCount: {
     [key: number]: number[];
   } = {};
   for (let i = 0; i < childrenArray.length; i++) {
     const colSpan = colSpanArr[i];
-    // if current row is full, go to next row
     if (currentRowTotalColSpan + colSpan > numColumns) {
       currentRow++;
       currentRowTotalColSpan = colSpan;
     } else {
-      // if current row is not full, add colSpan to current row
       currentRowTotalColSpan += colSpan;
     }
     rowItemsCount[currentRow] = rowItemsCount[currentRow]
@@ -111,7 +108,6 @@ const Grid = forwardRef<React.ComponentRef<typeof View>, IGridProps>(
     const obj = generateResponsiveNumColumns({ gridClass });
     const responsiveNumColumns: any = useBreakpointValue(obj);
     const itemsPerRow = useMemo(() => {
-      // get the colSpan of each child
       const colSpanArr = React.Children.map(children, (child: any) => {
         const gridItemClassName = child?.props?._extra?.className;
         const colSpan2 = getBreakPointValue(
@@ -228,7 +224,6 @@ const GridItem = forwardRef<React.ComponentRef<typeof View>, IGridItemProps>(
       if (flexDirection?.includes('column')) {
         return 'auto';
       }
-      // Find which row this item is in
       const row = Object.keys(itemsPerRow).find((key) => {
         return itemsPerRow[key].includes(props?.index);
       });
@@ -237,12 +232,9 @@ const GridItem = forwardRef<React.ComponentRef<typeof View>, IGridItemProps>(
       }
       const rowColsCount = itemsPerRow[row]?.length || 1;
       const space = columnGap || gap || 0;
-      // Calculate available width accounting for gaps
       const totalGapWidth = space * (rowColsCount - 1);
       const availableWidth = calculatedWidth - totalGapWidth;
-      // Calculate the width for this item based on its column span
       const itemWidth = (availableWidth * responsiveColSpan) / numColumns;
-      // Return the width directly instead of percentage for better native compatibility
       return Math.max(0, Math.floor(itemWidth));
     }, [
       calculatedWidth,
@@ -261,7 +253,6 @@ const GridItem = forwardRef<React.ComponentRef<typeof View>, IGridItemProps>(
         gridItemClass={gridItemClass}
         className={gridItemStyle({
           class: className,
-        })}
         {...props}
         style={[
           {

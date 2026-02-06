@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import { Box } from '@/components/ui/box';
-import { Text } from '@/components/ui/text';
-import { Button, ButtonText, ButtonIcon } from '@/components/ui/button';
-import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { Icon } from '@/components/ui/icon';
-import { VStack } from '@/components/ui/vstack';
-import { Pressable } from 'react-native';
-import { EyeIcon, EyeOffIcon, ArrowRightIcon } from '@/components/ui/icon';
-import { createIcon } from '@gluestack-ui/core/icon/creator';
-import { Path } from 'react-native-svg';
-import { Svg } from '@gluestack-ui/core/icon/creator';
-import { useRouter } from 'expo-router';
+import React, { useState } from "react";
+import { Box } from "@/components/ui/box";
+import { Text } from "@/components/ui/text";
+import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
+import { Input, InputField, InputSlot } from "@/components/ui/input";
+import { Icon } from "@/components/ui/icon";
+import { VStack } from "@/components/ui/vstack";
+import { Pressable } from "react-native";
+import { EyeIcon, EyeOffIcon, ArrowRightIcon } from "@/components/ui/icon";
+import { createIcon } from "@gluestack-ui/core/icon/creator";
+import { Path } from "react-native-svg";
+import { Svg } from "@gluestack-ui/core/icon/creator";
+import { useRouter } from "expo-router";
 
-// Create Box/Inventory Icon
 const BoxIcon = createIcon({
   Root: Svg,
-  viewBox: '0 0 24 24',
+  viewBox: "0 0 24 24",
   path: (
     <>
       <Path
@@ -45,28 +44,28 @@ const BoxIcon = createIcon({
 
 export default function Home() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   });
 
   const validateForm = () => {
     const newErrors = {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     };
 
     if (!username.trim()) {
-      newErrors.username = 'El usuario es requerido';
+      newErrors.username = "El usuario es requerido";
     }
 
     if (!password.trim()) {
-      newErrors.password = 'La contraseña es requerida';
+      newErrors.password = "La contraseña es requerida";
     } else if (password.length < 4) {
-      newErrors.password = 'La contraseña debe tener al menos 4 caracteres';
+      newErrors.password = "La contraseña debe tener al menos 4 caracteres";
     }
 
     setErrors(newErrors);
@@ -75,8 +74,7 @@ export default function Home() {
 
   const handleLogin = () => {
     if (validateForm()) {
-      // Si la validación pasa, navegar a las tabs
-      router.push('/tabs/(tabs)/inicio');
+      router.push("/tabs/(tabs)/inicio");
     }
   };
 
@@ -118,7 +116,7 @@ export default function Home() {
                   onChangeText={(text) => {
                     setUsername(text);
                     if (errors.username) {
-                      setErrors({ ...errors, username: '' });
+                      setErrors({ ...errors, username: "" });
                     }
                   }}
                   className="text-base dark:text-white"
@@ -148,7 +146,7 @@ export default function Home() {
                   onChangeText={(text) => {
                     setPassword(text);
                     if (errors.password) {
-                      setErrors({ ...errors, password: '' });
+                      setErrors({ ...errors, password: "" });
                     }
                   }}
                   className="text-base flex-1 dark:text-white"
