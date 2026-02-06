@@ -14,9 +14,9 @@ export default function Inicio() {
       <HStack
         space="xl"
         reversed={false}
-        className=" px-5 m-6 items-center bg-primary-600 py-4 rounded-2xl"
+        className=" px-5 m-6 items-center bg-secondary-400 py-4 rounded-2xl"
       >
-        <Text className="font-semibold text-white">Buscar</Text>
+        <Text className="font-semibold text-xl text-white">Buscar</Text>
         <Input
           variant="outline"
           size="md"
@@ -35,7 +35,7 @@ export default function Inicio() {
             <Box className="h-24 w-24 bg-secondary-500 rounded-2xl justify-center items-center">
               <Grid3x3 size={50} color="#fff112" />
             </Box>
-            <Text className="text-white text-center mt-12">Pisos</Text>
+            <Text className="text-white text-center text-lg mt-12">Categoria larga</Text>
           </Box>
 
           <Box className="h-32 w-32 bg-secondary-500 rounded-2xl" />
