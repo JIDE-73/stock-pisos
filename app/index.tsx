@@ -79,21 +79,21 @@ export default function Home() {
   };
 
   return (
-    <Box className="flex-1 bg-gray-200 dark:bg-gray-900 items-center justify-center px-5">
+    <Box className="flex-1 bg-black items-center justify-center px-5">
       {/* White Card Container */}
-      <Box className="bg-white dark:bg-gray-800 rounded-2xl p-8 w-full max-w-md shadow-lg">
+      <Box className="bg-gray-900 rounded-2xl p-8 w-full max-w-md shadow-lg border-2 border-[#FFD700]">
         <VStack space="xl" className="items-center">
           {/* Icon Circle */}
-          <Box className="w-20 h-20 rounded-full bg-blue-600 items-center justify-center mb-2">
-            <Icon as={BoxIcon} size="xl" className="text-white" />
+          <Box className="w-20 h-20 rounded-full bg-[#FFD700] items-center justify-center mb-2">
+            <Icon as={BoxIcon} size="xl" className="text-black" />
           </Box>
 
           {/* Title */}
           <VStack space="sm" className="items-center w-full justify-center">
-            <Text className="text-3xl font-bold text-black dark:text-white text-center w-full">
+            <Text className="text-3xl font-bold text-white text-center w-full">
               Sistema de Inventario
             </Text>
-            <Text className="text-base text-gray-500 dark:text-gray-300 text-center w-full">
+            <Text className="text-base text-[#B8860B] text-center w-full">
               Ingresa tus datos para acceder al sistema
             </Text>
           </VStack>
@@ -102,12 +102,12 @@ export default function Home() {
           <VStack space="lg" className="w-full mt-4">
             {/* Username Field */}
             <VStack space="xs">
-              <Text className="text-base font-bold text-black dark:text-white">Usuario</Text>
+              <Text className="text-base font-bold text-white">Usuario</Text>
               <Input
                 variant="outline"
                 size="lg"
                 className={`rounded-lg ${
-                  errors.username ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  errors.username ? 'border-red-500' : 'border-[#B8860B]'
                 }`}
               >
                 <InputField
@@ -119,7 +119,7 @@ export default function Home() {
                       setErrors({ ...errors, username: "" });
                     }
                   }}
-                  className="text-base dark:text-white"
+                  className="text-base text-white"
                 />
               </Input>
               {errors.username && (
@@ -131,12 +131,12 @@ export default function Home() {
 
             {/* Password Field */}
             <VStack space="xs">
-              <Text className="text-base font-bold text-black dark:text-white">Contraseña</Text>
+              <Text className="text-base font-bold text-white">Contraseña</Text>
               <Input
                 variant="outline"
                 size="lg"
                 className={`rounded-lg ${
-                  errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  errors.password ? 'border-red-500' : 'border-[#B8860B]'
                 }`}
               >
                 <InputField
@@ -149,7 +149,7 @@ export default function Home() {
                       setErrors({ ...errors, password: "" });
                     }
                   }}
-                  className="text-base flex-1 dark:text-white"
+                  className="text-base flex-1 text-white"
                 />
                 <InputSlot className="pr-3">
                   <Pressable
@@ -159,9 +159,9 @@ export default function Home() {
                     <Icon
                       as={showPassword ? EyeOffIcon : EyeIcon}
                       size="md"
-                      className="text-gray-500 dark:text-gray-300 mr-1"
+                      className="text-[#B8860B] mr-1"
                     />
-                    <Text className="text-gray-500 dark:text-gray-300 text-sm">Mostrar</Text>
+                    <Text className="text-[#B8860B] text-sm">Mostrar</Text>
                   </Pressable>
                 </InputSlot>
               </Input>
@@ -176,11 +176,11 @@ export default function Home() {
             <Button
               size="lg"
               action="primary"
-              className="bg-blue-700 dark:bg-blue-900 rounded-lg mt-4"
+              className="bg-[#FFD700] rounded-lg mt-4"
               onPress={handleLogin}
             >
-              <ButtonIcon as={ArrowRightIcon} className="text-white" />
-              <ButtonText className="text-white font-medium text-base">
+              <ButtonIcon as={ArrowRightIcon} className="text-black" />
+              <ButtonText className="text-black font-medium text-base">
                 Iniciar Sesión
               </ButtonText>
             </Button>
