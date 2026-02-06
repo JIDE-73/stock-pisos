@@ -1,20 +1,21 @@
-// Importaciones de React y hooks necesarios
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-// Importación de componentes UI básicos
-import { Box } from '@/components/ui/box';
-import { Text } from '@/components/ui/text';
-import { Heading } from '@/components/ui/heading';
-import { Button, ButtonText } from '@/components/ui/button';
-import { Input, InputField } from '@/components/ui/input';
-import { VStack } from '@/components/ui/vstack';
-import { ScrollView } from '@/components/ui/scroll-view';
-import { FormControl, FormControlLabel, FormControlError, FormControlErrorText } from '@/components/ui/form-control';
+import { Box } from "@/components/ui/box";
+import { Text } from "@/components/ui/text";
+import { Heading } from "@/components/ui/heading";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
+import { VStack } from "@/components/ui/vstack";
+import { ScrollView } from "@/components/ui/scroll-view";
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlError,
+  FormControlErrorText,
+} from "@/components/ui/form-control";
 
-// Importación de componentes nativos de React Native
-import { Alert } from 'react-native';
+import { Alert } from "react-native";
 
-// Importación de componentes del selector desplegable
 import {
   Select,
   SelectTrigger,
@@ -27,12 +28,10 @@ import {
   SelectDragIndicatorWrapper,
   SelectItem,
   SelectScrollView,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
-// Importación de iconos
-import { ChevronDownIcon } from '@/components/ui/icon';
+import { ChevronDownIcon } from "@/components/ui/icon";
 
-// Interface que define la estructura de un establecimiento/almacén
 interface Establecimiento {
   id: string;
   nombre: string;
@@ -42,147 +41,124 @@ interface Establecimiento {
   celular: string;
 }
 
-// Interface que define la estructura de un estante/lugar de guardado
 interface Estante {
-  id: string;                      // ID único del estante
-  establecimientoId: string;       // ID del almacén al que pertenece
-  establecimientoNombre: string;   // Nombre del almacén (para mostrar)
-  seccion: string;                 // Letra de la sección (A, B, C, etc.)
-  nivel: number;                   // Número del nivel/posición
-  codigo: string;                  // Código completo del estante (Ej: A-01, A-02, B-01)
+  id: string;
+  establecimientoId: string;
+  establecimientoNombre: string;
+  seccion: string;
+  nivel: number;
+  codigo: string;
 }
 
 export default function Estantes() {
-  // Estado que almacena la lista de almacenes disponibles
-  // En una app real, esto vendría de un contexto o estado global compartido
   const [establecimientos] = useState<Establecimiento[]>([
     {
-      id: '1',
-      nombre: 'Almacén Central',
-      calle: 'Av. Principal 123',
-      cp: '12345',
-      colonia: 'Centro',
-      celular: '5551234567',
+      id: "1",
+      nombre: "Almacén Central",
+      calle: "Av. Principal 123",
+      cp: "12345",
+      colonia: "Centro",
+      celular: "5551234567",
     },
   ]);
 
-  // Estado que almacena todos los estantes/lugares de guardado creados
   const [estantes, setEstantes] = useState<Estante[]>([]);
 
-  // Estado que controla si se muestra el formulario de crear estantes
   const [showForm, setShowForm] = useState(false);
-  
-  // Estado que almacena los datos del formulario de creación de estantes
+
   const [formData, setFormData] = useState({
-    establecimientoId: '',  // ID del almacén seleccionado
-    seccion: '',            // Letra de la sección (A, B, C, etc.)
-    niveles: '',            // Cantidad de lugares a crear en esa sección
+    establecimientoId: "",
+    seccion: "",
+    niveles: "",
   });
 
-  // Estado que almacena los mensajes de error de validación para cada campo
   const [errors, setErrors] = useState({
-    establecimientoId: '',
-    seccion: '',
-    niveles: '',
+    establecimientoId: "",
+    seccion: "",
+    niveles: "",
   });
 
-  // Función que valida todos los campos del formulario antes de crear los estantes
   const validateForm = () => {
-    // Objeto temporal para almacenar los errores de validación
     const newErrors = {
-      establecimientoId: '',
-      seccion: '',
-      niveles: '',
+      establecimientoId: "",
+      seccion: "",
+      niveles: "",
     };
 
-    // Validar que se haya seleccionado un almacén
     if (!formData.establecimientoId) {
-      newErrors.establecimientoId = 'Por favor, elija un almacén de la lista';
+      newErrors.establecimientoId = "Por favor, elija un almacén de la lista";
     }
 
-    // Validar que la sección sea una sola letra
     if (!formData.seccion.trim()) {
-      newErrors.seccion = 'Por favor, escriba una letra para la sección';
+      newErrors.seccion = "Por favor, escriba una letra para la sección";
     } else if (!/^[A-Z]$/i.test(formData.seccion.trim())) {
-      newErrors.seccion = 'Por favor, escriba solo una letra (A, B, C, etc.)';
+      newErrors.seccion = "Por favor, escriba solo una letra (A, B, C, etc.)";
     }
 
-    // Validar que los niveles sean un número válido entre 1 y 99
     if (!formData.niveles.trim()) {
-      newErrors.niveles = 'Por favor, ingrese cuántos niveles quiere crear';
+      newErrors.niveles = "Por favor, ingrese cuántos niveles quiere crear";
     } else {
       const niveles = parseInt(formData.niveles);
       if (isNaN(niveles) || niveles < 1 || niveles > 99) {
-        newErrors.niveles = 'Por favor, ingrese un número entre 1 y 99';
+        newErrors.niveles = "Por favor, ingrese un número entre 1 y 99";
       }
     }
 
-    // Actualizar el estado de errores
     setErrors(newErrors);
-    // Retornar true si no hay errores, false si hay al menos un error
-    return !Object.values(newErrors).some((error) => error !== '');
+    return !Object.values(newErrors).some((error) => error !== "");
   };
 
-  // Función que se ejecuta al presionar el botón "Crear Lugares de Guardado"
   const handleSubmit = () => {
-    // Primero validar que todos los campos sean correctos
     if (validateForm()) {
-      // Buscar el establecimiento seleccionado en la lista
       const establecimiento = establecimientos.find(
-        (e) => e.id === formData.establecimientoId
+        (e) => e.id === formData.establecimientoId,
       );
 
-      // Si no se encuentra el establecimiento, salir
       if (!establecimiento) return;
 
-      // Preparar los datos normalizados
-      const seccion = formData.seccion.trim().toUpperCase();  // Convertir a mayúscula
-      const cantidadNiveles = parseInt(formData.niveles);      // Convertir a número
-      const nuevosEstantes: Estante[] = [];                    // Array para almacenar los nuevos estantes
+      const seccion = formData.seccion.trim().toUpperCase();
+      const cantidadNiveles = parseInt(formData.niveles);
+      const nuevosEstantes: Estante[] = [];
 
-      // Generar todos los estantes para la sección mediante un loop
-      // Si el usuario pide 5 niveles en sección A, creará: A-01, A-02, A-03, A-04, A-05
       for (let i = 1; i <= cantidadNiveles; i++) {
-        // Generar el código del estante (ej: A-01, A-02, etc.)
-        // padStart(2, '0') asegura que siempre tenga 2 dígitos (01, 02, 10, etc.)
-        const codigo = `${seccion}-${String(i).padStart(2, '0')}`;
-        
+        const codigo = `${seccion}-${String(i).padStart(2, "0")}`;
+
         // Crear el objeto estante y agregarlo al array
         nuevosEstantes.push({
-          id: `${Date.now()}-${i}`,                   // ID único usando timestamp
-          establecimientoId: establecimiento.id,       // ID del almacén
+          id: `${Date.now()}-${i}`, // ID único usando timestamp
+          establecimientoId: establecimiento.id, // ID del almacén
           establecimientoNombre: establecimiento.nombre, // Nombre del almacén para mostrar
-          seccion: seccion,                            // Letra de la sección
-          nivel: i,                                    // Número de nivel
-          codigo: codigo,                              // Código completo (A-01)
+          seccion: seccion, // Letra de la sección
+          nivel: i, // Número de nivel
+          codigo: codigo, // Código completo (A-01)
         });
       }
 
       // Agregar todos los nuevos estantes a la lista existente
       setEstantes([...estantes, ...nuevosEstantes]);
-      
+
       // Limpiar el formulario después de guardar
       setFormData({
-        establecimientoId: '',
-        seccion: '',
-        niveles: '',
+        establecimientoId: "",
+        seccion: "",
+        niveles: "",
       });
-      
+
       // Ocultar el formulario y volver a la lista
       setShowForm(false);
-      
+
       // Limpiar los mensajes de error
       setErrors({
-        establecimientoId: '',
-        seccion: '',
-        niveles: '',
+        establecimientoId: "",
+        seccion: "",
+        niveles: "",
       });
-      
+
       // Mostrar confirmación de éxito al usuario
       Alert.alert(
-        '✅ ¡Lugares Creados!',
+        "✅ ¡Lugares Creados!",
         `Se han creado ${cantidadNiveles} lugares de guardado en la sección ${seccion}.`,
-        [{ text: 'Entendido', style: 'default' }]
+        [{ text: "Entendido", style: "default" }],
       );
     }
   };
@@ -191,36 +167,44 @@ export default function Estantes() {
   const handleCancel = () => {
     // Ocultar el formulario
     setShowForm(false);
-    
+
     // Limpiar todos los datos ingresados en el formulario
     setFormData({
-      establecimientoId: '',
-      seccion: '',
-      niveles: '',
+      establecimientoId: "",
+      seccion: "",
+      niveles: "",
     });
-    
+
     // Limpiar los mensajes de error
     setErrors({
-      establecimientoId: '',
-      seccion: '',
-      niveles: '',
+      establecimientoId: "",
+      seccion: "",
+      niveles: "",
     });
   };
 
   // Función que agrupa los estantes por establecimiento para mostrarlos organizados
   // Usa reduce para transformar el array de estantes en un objeto agrupado por establecimientoId
-  const estantesPorEstablecimiento = estantes.reduce((acc, estante) => {
-    // Si este establecimiento no existe en el acumulador, crearlo
-    if (!acc[estante.establecimientoId]) {
-      acc[estante.establecimientoId] = {
-        establecimiento: establecimientos.find((e) => e.id === estante.establecimientoId),
-        estantes: [],
-      };
-    }
-    // Agregar este estante al grupo de su establecimiento
-    acc[estante.establecimientoId].estantes.push(estante);
-    return acc;
-  }, {} as Record<string, { establecimiento?: Establecimiento; estantes: Estante[] }>);
+  const estantesPorEstablecimiento = estantes.reduce(
+    (acc, estante) => {
+      // Si este establecimiento no existe en el acumulador, crearlo
+      if (!acc[estante.establecimientoId]) {
+        acc[estante.establecimientoId] = {
+          establecimiento: establecimientos.find(
+            (e) => e.id === estante.establecimientoId,
+          ),
+          estantes: [],
+        };
+      }
+      // Agregar este estante al grupo de su establecimiento
+      acc[estante.establecimientoId].estantes.push(estante);
+      return acc;
+    },
+    {} as Record<
+      string,
+      { establecimiento?: Establecimiento; estantes: Estante[] }
+    >,
+  );
 
   // Renderizado del componente
   return (
@@ -272,7 +256,8 @@ export default function Estantes() {
                     Aún no tiene lugares de guardado registrados
                   </Text>
                   <Text className="text-xl text-[#FFD700] text-center">
-                    Toque el botón de arriba para crear lugares donde guardar sus productos
+                    Toque el botón de arriba para crear lugares donde guardar
+                    sus productos
                   </Text>
                 </Box>
               ) : (
@@ -290,15 +275,18 @@ export default function Estantes() {
 
                       {/* Agrupar estantes por sección (A, B, C, etc.) usando reduce */}
                       {Object.entries(
-                        grupo.estantes.reduce((acc, estante) => {
-                          // Si esta sección no existe en el acumulador, crearla
-                          if (!acc[estante.seccion]) {
-                            acc[estante.seccion] = [];
-                          }
-                          // Agregar el estante a su sección
-                          acc[estante.seccion].push(estante);
-                          return acc;
-                        }, {} as Record<string, Estante[]>)
+                        grupo.estantes.reduce(
+                          (acc, estante) => {
+                            // Si esta sección no existe en el acumulador, crearla
+                            if (!acc[estante.seccion]) {
+                              acc[estante.seccion] = [];
+                            }
+                            // Agregar el estante a su sección
+                            acc[estante.seccion].push(estante);
+                            return acc;
+                          },
+                          {} as Record<string, Estante[]>,
+                        ),
                       ).map(([seccion, estantesSeccion]) => (
                         // Mostrar cada sección con sus estantes
                         <Box
@@ -312,7 +300,7 @@ export default function Estantes() {
                           <Box className="flex-row flex-wrap gap-3">
                             {/* Ordenar estantes por nivel y mapearlos a cajas visuales */}
                             {estantesSeccion
-                              .sort((a, b) => a.nivel - b.nivel)  // Ordenar de menor a mayor
+                              .sort((a, b) => a.nivel - b.nivel) // Ordenar de menor a mayor
                               .map((estante) => (
                                 <Box
                                   key={estante.id}
@@ -338,7 +326,9 @@ export default function Estantes() {
                 Crear Lugares de Guardado
               </Heading>
               <Text className="text-xl text-[#FFD700] mb-8 font-semibold">
-                Complete los campos para crear lugares de guardado automáticamente. Se crearán todos los niveles de la sección que indique.
+                Complete los campos para crear lugares de guardado
+                automáticamente. Se crearán todos los niveles de la sección que
+                indique.
               </Text>
 
               <VStack space="xl">
@@ -368,7 +358,7 @@ export default function Estantes() {
                       setFormData({ ...formData, establecimientoId: value });
                       // Si había un error, limpiarlo
                       if (errors.establecimientoId) {
-                        setErrors({ ...errors, establecimientoId: '' });
+                        setErrors({ ...errors, establecimientoId: "" });
                       }
                     }}
                   >
@@ -377,8 +367,8 @@ export default function Estantes() {
                       size="xl"
                       className={`rounded-2xl border-3 ${
                         errors.establecimientoId
-                          ? 'border-red-600'
-                          : 'border-[#FFD700]'
+                          ? "border-red-600"
+                          : "border-[#FFD700]"
                       } bg-[#2a2a2a]`}
                     >
                       <SelectInput
@@ -392,10 +382,11 @@ export default function Estantes() {
                     </SelectTrigger>
                     {/* Portal que muestra el menú sobre todo lo demás */}
                     <SelectPortal>
-                      <SelectBackdrop />  {/* Fondo oscuro detrás del menú */}
+                      <SelectBackdrop /> {/* Fondo oscuro detrás del menú */}
                       <SelectContent>
                         <SelectDragIndicatorWrapper>
-                          <SelectDragIndicator />  {/* Indicador visual para cerrar */}
+                          <SelectDragIndicator />{" "}
+                          {/* Indicador visual para cerrar */}
                         </SelectDragIndicatorWrapper>
                         <SelectScrollView>
                           {/* Mapear cada almacén a una opción del menú */}
@@ -426,7 +417,8 @@ export default function Estantes() {
                     Paso 2: Configurar Sección y Cantidad
                   </Text>
                   <Text className="text-lg text-[#FFD700]">
-                    Indique la letra de la sección y cuántos lugares quiere crear
+                    Indique la letra de la sección y cuántos lugares quiere
+                    crear
                   </Text>
                 </Box>
 
@@ -441,7 +433,7 @@ export default function Estantes() {
                     variant="outline"
                     size="xl"
                     className={`rounded-2xl border-3 ${
-                      errors.seccion ? 'border-red-600' : 'border-[#FFD700]'
+                      errors.seccion ? "border-red-600" : "border-[#FFD700]"
                     } bg-[#2a2a2a]`}
                   >
                     <InputField
@@ -449,17 +441,19 @@ export default function Estantes() {
                       value={formData.seccion}
                       onChangeText={(text) => {
                         // Convertir a mayúscula y eliminar cualquier carácter que no sea letra
-                        const upperText = text.toUpperCase().replace(/[^A-Z]/g, '');
+                        const upperText = text
+                          .toUpperCase()
+                          .replace(/[^A-Z]/g, "");
                         setFormData({ ...formData, seccion: upperText });
                         // Si había un error, limpiarlo cuando el usuario empiece a escribir
                         if (errors.seccion) {
-                          setErrors({ ...errors, seccion: '' });
+                          setErrors({ ...errors, seccion: "" });
                         }
                       }}
-                      maxLength={1}                      // Permitir solo 1 carácter
+                      maxLength={1} // Permitir solo 1 carácter
                       className="text-2xl py-4 text-center text-[#FFD700]"
                       placeholderTextColor="#B8860B"
-                      autoCapitalize="characters"        // Auto-capitalizar en móvil
+                      autoCapitalize="characters" // Auto-capitalizar en móvil
                     />
                   </Input>
                   {errors.seccion && (
@@ -485,7 +479,7 @@ export default function Estantes() {
                     variant="outline"
                     size="xl"
                     className={`rounded-2xl border-3 ${
-                      errors.niveles ? 'border-red-600' : 'border-[#FFD700]'
+                      errors.niveles ? "border-red-600" : "border-[#FFD700]"
                     } bg-[#2a2a2a]`}
                   >
                     <InputField
@@ -495,15 +489,15 @@ export default function Estantes() {
                         // Eliminar cualquier carácter que no sea número
                         setFormData({
                           ...formData,
-                          niveles: text.replace(/\D/g, ''),
+                          niveles: text.replace(/\D/g, ""),
                         });
                         // Si había un error, limpiarlo
                         if (errors.niveles) {
-                          setErrors({ ...errors, niveles: '' });
+                          setErrors({ ...errors, niveles: "" });
                         }
                       }}
-                      keyboardType="numeric"  // Mostrar teclado numérico en móvil
-                      maxLength={2}            // Limitar a 2 dígitos (máximo 99)
+                      keyboardType="numeric" // Mostrar teclado numérico en móvil
+                      maxLength={2} // Limitar a 2 dígitos (máximo 99)
                       className="text-2xl py-4 text-center"
                     />
                   </Input>
@@ -515,15 +509,19 @@ export default function Estantes() {
                     </FormControlError>
                   )}
                   {/* Mostrar mensaje de confirmación si los campos son válidos */}
-                  {formData.seccion && formData.niveles && !errors.seccion && !errors.niveles && (
-                    <Box className="bg-green-50 p-4 rounded-xl border-2 border-green-400 mt-3">
-                      <Text className="text-xl font-semibold text-green-900">
-                        Se crearán lugares desde {formData.seccion.toUpperCase()}-01 hasta{' '}
-                        {formData.seccion.toUpperCase()}-
-                        {String(formData.niveles).padStart(2, '0')}
-                      </Text>
-                    </Box>
-                  )}
+                  {formData.seccion &&
+                    formData.niveles &&
+                    !errors.seccion &&
+                    !errors.niveles && (
+                      <Box className="bg-green-50 p-4 rounded-xl border-2 border-green-400 mt-3">
+                        <Text className="text-xl font-semibold text-green-900">
+                          Se crearán lugares desde{" "}
+                          {formData.seccion.toUpperCase()}-01 hasta{" "}
+                          {formData.seccion.toUpperCase()}-
+                          {String(formData.niveles).padStart(2, "0")}
+                        </Text>
+                      </Box>
+                    )}
                 </FormControl>
 
                 {/* Vista previa: Mostrar visualmente todos los lugares que se crearán */}
@@ -541,7 +539,7 @@ export default function Estantes() {
                         {/* Crear un array de números del 1 al número de niveles */}
                         {Array.from(
                           { length: parseInt(formData.niveles) },
-                          (_, i) => i + 1  // Generar [1, 2, 3, ..., n]
+                          (_, i) => i + 1, // Generar [1, 2, 3, ..., n]
                         ).map((nivel) => (
                           <Box
                             key={nivel}
@@ -549,7 +547,7 @@ export default function Estantes() {
                           >
                             <Text className="text-2xl font-bold text-green-900">
                               {formData.seccion.toUpperCase()}-
-                              {String(nivel).padStart(2, '0')}
+                              {String(nivel).padStart(2, "0")}
                             </Text>
                           </Box>
                         ))}
@@ -570,7 +568,7 @@ export default function Estantes() {
                       ✅ Crear Lugares de Guardado
                     </ButtonText>
                   </Button>
-                  
+
                   {/* Botón para cancelar y volver a la lista (descarta cambios) */}
                   <Button
                     size="xl"
