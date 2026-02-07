@@ -43,11 +43,21 @@ export const categories = [
   { id: 19, name: "Utilidades", icon: Zap },
 ];
 
+export type ProductVariant = {
+  id: number;
+  name: string;
+  price: number;
+  stock?: number;
+  attributes?: Record<string, string>; // ej: { color: "Rojo", size: "M" }
+};
+
 export type Product = {
   id: number;
   name: string;
   price: number;
   image?: string;
+  description?: string;
+  variants?: ProductVariant[];
 };
 
 export const productsByCategory: Record<number, Product[]> = {
@@ -108,21 +118,51 @@ export const productsByCategory: Record<number, Product[]> = {
       id: 13,
       name: "Camiseta Premium",
       price: 350,
+      description: "Camiseta de alta calidad con diseño moderno",
+      variants: [
+        { id: 1, name: "Rojo - Talla S", price: 350, stock: 10, attributes: { color: "Rojo", size: "S" } },
+        { id: 2, name: "Rojo - Talla M", price: 350, stock: 15, attributes: { color: "Rojo", size: "M" } },
+        { id: 3, name: "Rojo - Talla L", price: 350, stock: 8, attributes: { color: "Rojo", size: "L" } },
+        { id: 4, name: "Azul - Talla S", price: 350, stock: 12, attributes: { color: "Azul", size: "S" } },
+        { id: 5, name: "Azul - Talla M", price: 350, stock: 20, attributes: { color: "Azul", size: "M" } },
+        { id: 6, name: "Azul - Talla L", price: 350, stock: 5, attributes: { color: "Azul", size: "L" } },
+      ],
     },
     {
       id: 14,
       name: "Pantalón Casual",
       price: 650,
+      description: "Pantalón cómodo y versátil para uso diario",
+      variants: [
+        { id: 7, name: "Negro - Talla 30", price: 650, stock: 7, attributes: { color: "Negro", size: "30" } },
+        { id: 8, name: "Negro - Talla 32", price: 650, stock: 10, attributes: { color: "Negro", size: "32" } },
+        { id: 9, name: "Gris - Talla 30", price: 650, stock: 5, attributes: { color: "Gris", size: "30" } },
+        { id: 10, name: "Gris - Talla 32", price: 650, stock: 8, attributes: { color: "Gris", size: "32" } },
+      ],
     },
     {
       id: 15,
       name: "Chaqueta de Invierno",
       price: 2800,
+      description: "Chaqueta abrigada perfecta para el invierno",
+      variants: [
+        { id: 11, name: "Negro - Talla M", price: 2800, stock: 6, attributes: { color: "Negro", size: "M" } },
+        { id: 12, name: "Negro - Talla L", price: 2800, stock: 4, attributes: { color: "Negro", size: "L" } },
+        { id: 13, name: "Azul Marino - Talla M", price: 2800, stock: 8, attributes: { color: "Azul Marino", size: "M" } },
+        { id: 14, name: "Azul Marino - Talla L", price: 2800, stock: 3, attributes: { color: "Azul Marino", size: "L" } },
+      ],
     },
     {
       id: 16,
       name: "Zapatillas Deportivas",
       price: 1500,
+      description: "Zapatillas cómodas para entrenamiento y uso diario",
+      variants: [
+        { id: 15, name: "Blanco - Talla 40", price: 1500, stock: 12, attributes: { color: "Blanco", size: "40" } },
+        { id: 16, name: "Blanco - Talla 42", price: 1500, stock: 15, attributes: { color: "Blanco", size: "42" } },
+        { id: 17, name: "Negro - Talla 40", price: 1500, stock: 10, attributes: { color: "Negro", size: "40" } },
+        { id: 18, name: "Negro - Talla 42", price: 1500, stock: 8, attributes: { color: "Negro", size: "42" } },
+      ],
     },
     {
       id: 17,
@@ -187,4 +227,14 @@ export const productsByCategory: Record<number, Product[]> = {
 
 export const getProductsForCategory = (categoryId: number): Product[] => {
   return productsByCategory[categoryId] || [];
+};
+
+export const getProductById = (productId: number): Product | null => {
+  for (const categoryProducts of Object.values(productsByCategory)) {
+    const product = categoryProducts.find((p) => p.id === productId);
+    if (product) {
+      return product;
+    }
+  }
+  return null;
 };

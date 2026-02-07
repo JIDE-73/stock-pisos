@@ -12,10 +12,15 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, width, onPress }: ProductCardProps) {
+  const handlePress = () => {
+    console.log("ProductCard presionado - Product ID:", product.id);
+    onPress?.(product.id);
+  };
+
   return (
-    <Pressable onPress={() => onPress?.(product.id)} className="mb-4">
+    <Pressable onPress={handlePress} className="mb-4">
       <Box
-        className="bg-secondary-500 rounded-lg overflow-hidden border border-yellow-400"
+        className="bg-secondary-500 rounded-lg overflow-hidden border border-yellow-400 mt-50"
         style={{ width }}
       >
         {/* Imagen placeholder */}
