@@ -1,98 +1,118 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Center } from "@/components/ui/center";
 import { Text } from "@/components/ui/text";
 import { Box } from "@/components/ui/box";
 import { HStack } from "@/components/ui/hstack";
 import { ScrollView } from "@/components/ui/scroll-view";
-import { Dimensions } from 'react-native';
-import { 
-  Search, 
-  ShoppingBag, 
-  Smartphone, 
-  Shirt, 
-  Apple, 
-  Wrench, 
-  Sofa, 
-  Gamepad2, 
-  BookOpen, 
+import { Dimensions } from "react-native";
+import {
+  Search,
+  ShoppingBag,
+  Smartphone,
+  Shirt,
+  Apple,
+  Wrench,
+  Sofa,
+  Gamepad2,
+  BookOpen,
   Dumbbell,
-  Home
+  Home,
+  Heart,
+  Sparkles,
+  Car,
+  PawPrint,
+  Book,
+  Music,
+  Plane,
+  Leaf,
+  Headphones,
+  Zap,
 } from "lucide-react-native";
 
 import { Input, InputField } from "@/components/ui/input";
 
 // Obtener dimensiones de la pantalla
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get("window");
 
 // Datos de ejemplo para las categorías con iconos específicos
 const categories = [
-  { id: 1, name: 'Productos', icon: ShoppingBag },
-  { id: 2, name: 'Tecnología', icon: Smartphone },
-  { id: 3, name: 'Moda', icon: Shirt },
-  { id: 4, name: 'Supermercado', icon: Apple },
-  { id: 5, name: 'Ferretería', icon: Wrench },
-  { id: 6, name: 'Hogar', icon: Sofa },
-  { id: 7, name: 'Entretenimiento', icon: Gamepad2 },
-  { id: 8, name: 'Educación', icon: BookOpen },
-  { id: 9, name: 'Deportes', icon: Dumbbell },
+  { id: 1, name: "Productos", icon: ShoppingBag },
+  { id: 2, name: "Tecnología", icon: Smartphone },
+  { id: 3, name: "Moda", icon: Shirt },
+  { id: 4, name: "Supermercado", icon: Apple },
+  { id: 5, name: "Ferretería", icon: Wrench },
+  { id: 6, name: "Hogar", icon: Sofa },
+  { id: 7, name: "Entretenimiento", icon: Gamepad2 },
+  { id: 8, name: "Educación", icon: BookOpen },
+  { id: 9, name: "Deportes", icon: Dumbbell },
+  { id: 10, name: "Salud y Bienestar", icon: Heart },
+  { id: 11, name: "Belleza", icon: Sparkles },
+  { id: 12, name: "Automóviles", icon: Car },
+  { id: 13, name: "Mascotas", icon: PawPrint },
+  { id: 14, name: "Libros", icon: Book },
+  { id: 15, name: "Música", icon: Music },
+  { id: 16, name: "Viajes", icon: Plane },
+  { id: 17, name: "Jardín", icon: Leaf },
+  { id: 18, name: "Accesorios", icon: Headphones },
+  { id: 19, name: "Utilidades", icon: Zap },
 ];
 
 export default function Inicio() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Calcular tamaño de los items basado en el ancho de la pantalla
   const itemSize = Math.min((screenWidth - 40) / 3, 100); // Más compacto: 100px máximo
   const iconBoxSize = itemSize * 0.7; // Reducido a 70%
 
   // Filtrar categorías basado en la búsqueda
-  const filteredCategories = categories.filter(category =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategories = categories.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   // Función para renderizar las categorías en grid
   const renderCategoriesGrid = (categoriesList: typeof categories) => {
     const rows = [];
-    
+
     for (let i = 0; i < categoriesList.length; i += 3) {
       const rowCategories = categoriesList.slice(i, i + 3);
       rows.push(
-        <HStack 
-          key={`row-${i}`} 
+        <HStack
+          key={`row-${i}`}
           space="sm" // Reducido a 'sm' para más compacto
-          reversed={false} 
+          reversed={false}
           className="mt-3 justify-between"
         >
           {rowCategories.map((category) => {
             const IconComponent = category.icon;
             return (
-              <Box 
-                key={category.id} 
+              <Box
+                key={category.id}
                 className="items-center"
                 style={{ width: itemSize }}
               >
-                <Box 
+                <Box
                   className="bg-secondary-500 rounded-lg justify-center items-center border-2 border-yellow-400"
-                  style={{ 
-                    width: iconBoxSize, 
+                  style={{
+                    width: iconBoxSize,
                     height: iconBoxSize,
                     minHeight: 65,
-                    minWidth: 65
+                    minWidth: 65,
                   }}
                 >
-                  <IconComponent 
+                  <IconComponent
                     size={iconBoxSize * 0.45} // Reducido a 45%
-                    color="#fff112" 
+                    color="#fff112"
                     strokeWidth={2}
                   />
                 </Box>
-                <Text 
+                <Text
                   className="text-white text-center mt-1.5 font-medium text-sm leading-tight"
                   numberOfLines={2}
                   ellipsizeMode="tail"
-                  style={{ 
+                  style={{
                     fontSize: screenWidth < 375 ? 12 : 14, // Texto más pequeño en pantallas angostas
                     minHeight: 36, // Altura mínima para evitar que se corte
-                    paddingHorizontal: 2 // Pequeño padding horizontal
+                    paddingHorizontal: 2, // Pequeño padding horizontal
                   }}
                 >
                   {category.name}
@@ -100,20 +120,20 @@ export default function Inicio() {
               </Box>
             );
           })}
-        </HStack>
+        </HStack>,
       );
     }
-    
+
     return rows;
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       className="flex-1 bg-[#000000]"
-      contentContainerStyle={{ 
-        flexGrow: 1, 
+      contentContainerStyle={{
+        flexGrow: 1,
         paddingBottom: 16,
-        paddingTop: 8
+        paddingTop: 8,
       }}
       showsVerticalScrollIndicator={false}
     >
@@ -124,7 +144,7 @@ export default function Inicio() {
             <Box className="bg-yellow-400 rounded-full p-2 mr-2">
               <Home size={26} color="#000000" strokeWidth={2.5} />
             </Box>
-            <Text 
+            <Text
               className="text-white text-2xl font-bold"
               style={{ fontSize: screenWidth < 375 ? 22 : 28 }}
             >
@@ -149,8 +169,8 @@ export default function Inicio() {
               isReadOnly={false}
               className="flex-1 border-0"
             >
-              <InputField 
-                placeholder="Buscar..." 
+              <InputField
+                placeholder="Buscar..."
                 value={searchTerm}
                 onChangeText={setSearchTerm}
                 className="text-white text-sm placeholder:text-gray-300"
@@ -174,9 +194,7 @@ export default function Inicio() {
             </Box>
           </Center>
         ) : (
-          <Box className="pb-6">
-            {renderCategoriesGrid(filteredCategories)}
-          </Box>
+          <Box className="pb-6">{renderCategoriesGrid(filteredCategories)}</Box>
         )}
       </Box>
     </ScrollView>
