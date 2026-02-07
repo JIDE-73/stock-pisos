@@ -346,7 +346,7 @@ export default function Inicio() {
 
             {/* Rating */}
             <HStack space="xs" className="items-center mt-2">
-              <HStack space={0}>
+              <HStack>
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
@@ -510,7 +510,7 @@ export default function Inicio() {
                 }
                 value={searchTerm}
                 onChangeText={setSearchTerm}
-                className="text-white text-sm placeholder:text-gray-300"
+                className="text-sm placeholder:text-gray-300"
                 placeholderTextColor="#9CA3AF"
               />
             </Input>
